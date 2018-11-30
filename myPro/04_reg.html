@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <!-- 注册信息表 -->
+    <form>
+      <p>
+        登录名称:
+        <input
+          type="text"
+          id="uname"
+          placeholder="请输入用户名"
+          onblur="checkUname()"
+          onfocus="promptUname()"
+        />
+        <span id="suname"></span>
+      </p>
+      <p>
+        登录密码:
+        <input
+          type="password"
+          id="upwd"
+          placeholder="请输入密码"
+          onclick="promtUpwd()"
+          onblur="checkUpwd()"
+        />
+        <span id="supwd"></span>
+      </p>
+      <p>
+        用户邮箱:
+        <input
+          type="text"
+          id="email"
+          placeholder="请输入邮箱"
+          onfocus="promptEmail()"
+          onblur="checkEmail()"
+        />
+        <span id="semail"></span>
+      </p>
+      <p>
+        联系方式:
+        <input
+          type="text"
+          id="phone"
+          placeholder="请输入联系方式"
+          onfocus="promptPhone()"
+          onblur="checkPhone()"
+        />
+        <span id="sphone"></span>
+      </p>
+      <p>
+        真实姓名:
+        <input type="text" id="user_name" placeholder="请输入真实姓名" />
+        <span id="suser_name"></span>
+      </p>
+      <p>
+        用户性别: <input type="radio" name="gender" id="man" value="1" /><label
+          for="man"
+          >男</label
+        >
+        <input type="radio" name="gender" id="woman" value="0" /><label
+          for="woman"
+          >女</label
+        >
+        <input type="radio" name="gender" id="unknow" value="2" checked /><label
+          for="unknow"
+          >保密</label
+        >
+      </p>
+      <p>
+        <input
+          type="button"
+          value="提交注册信息"
+          style="width:230px;height: 50px;background: #fefefe"
+          onclick="reg()"
+        />
+      </p>
+    </form>
+    <script>
+      // 用户名输入提示
+      function promptUname() {
+        suname.innerHTML = "用户名长度6-9位";
+      }
+      //用户名检测
+      function checkUname() {
+        var checkUname = uname.value;
+        if (!checkUname) {
+          suname.innerHTML = "用户名不能为空";
+          checkAll = false;
+        } else if (checkUname.length >= 6 && checkUname.length <= 9) {
+          var xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+              var result = xhr.responseText;
+              if (result == 1) {
+                suname.innerHTML = "用户名可用";
+                checkAll = true;
+              } else if (result == 0) {
+                suname.innerHTML = "用户名已存在";
+                checkAll = false;
+              } else {
+                suname.innerHTML = "我都搞不清楚^_^";
+                checkAll = false;
+              }
+            }
+          };
+          xhr.open("get", "/pro/checkUname?uname=" + checkUname, true);
+          xhr.send(null);
+        } else {
+          suname.innerHTML = "用户名不符合长度";
+          checkAll = false;
+        }
+      }
+      //密码输入提示
+      function promtUpwd() {
+        supwd.innerHTML = "密码长度6-9位";
+      }
+      //密码检测
+      function checkUpwd() {
+        var checkUpwd = upwd.value;
+        if (!checkUpwd) {
+          supwd.innerHTML = "密码不能为空";
+        } else if (checkUpwd.length >= 6 && checkUpwd.length <= 9) {
+          supwd.innerHTML = "密码可用";
+        } else {
+          supwd.innerHTML = "密码不符合长度";
+        }
+      }
+      //邮箱输入提示
+      function promptEmail() {
+        semail.innerHTML = "请输入合法邮箱";
+      }
+      //邮箱检测
+      function checkEmail() {
+        var checkEmail = email.value;
+        if (!checkEmail) {
+          semail.innerHTML = "邮箱不能为空";
+        }
+      }
+      //手机号输入提示
+      function promptPhone() {
+        sphone.innerHTML = "请输入11位手机号";
+      }
+      //手机号检测
+      function checkPhone() {
+        var checkPhone = phone.value;
+        if (!checkPhone) {
+          sphone.innerHTML = "手机号不能为空";
+        } else if (checkPhone.length == 11) {
+          var xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+              var result = xhr.responseText;
+              if (result == 1) {
+                sphone.innerHTML = "手机号可用";
+              } else if (result == 0) {
+                sphone.innerHTML = "手机号已使用";
+              } else {
+                sphone.innerHTML = "我也不知道啊^_^";
+              }
+            }
+          };
+          xhr.open("get", "/pro/checkPhone?phone=" + checkPhone, true);
+          xhr.send(null);
+        } else {
+          sphone.innerHTML = "手机号不符合长度";
+        }
+      }
+      //注册信息
+      function reg() {
+        var input_uname = uname.value;
+        var input_upwd = upwd.value;
+        var input_email = email.value;
+        var input_user_name = user_name.value;
+        var input_phone = phone.value;
+        var input_gender;
+        if (man.checked) {
+          input_gender = 1;
+        } else if (woman.checked) {
+          input_gender = 0;
+        } else {
+          input_gender = 2;
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            var result = xhr.responseText;
+            alert(result);
+            window.location.href = "http://127.0.0.1:3000/02_list.html";
+          }
+        };
+        xhr.open("post", "/pro/reg", true);
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded"
+        );
+        var formdata =
+          "uname=" +
+          input_uname +
+          "&upwd=" +
+          input_upwd +
+          "&email=" +
+          input_email +
+          "&user_name=" +
+          input_user_name +
+          "&gender=" +
+          input_gender +
+          "&phone=" +
+          input_phone;
+        xhr.send(formdata);
+      }
+    </script>
+  </body>
+</html>

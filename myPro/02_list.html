@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>List</title>
+</head>
+
+<body onload="loadUsers()">
+  <table border="1px" width="700px" align="center">
+    <thead>
+      <th>登录名称</th>
+      <th>电子邮箱</th>
+      <th>联系方式</th>
+      <th>真实姓名</th>
+      <th>用户性别</th>
+      <th>更多操作</th>
+    </thead>
+    <tbody id="content" height="400px"></tbody>
+  </table>
+  <script>
+    //加载用户列表
+    function loadUsers() {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          var result = xhr.responseText;
+          if (result == 0) {
+            alert("没有用户")
+          } else {
+            var arr = JSON.parse(result);
+            var str = "";
+            for (var i = 0; i < arr.length; i++) {
+              var gender = "";
+              if (arr[i].gender == 1) {
+                gender = "男";
+              } else if (arr[i].gender == 0) {
+                gender = "女"
+              } else {
+                gender = "保密";
+              }
+              str += "<tr>";
+              str += "<td>" + arr[i].uname + "</td>";
+              str += "<td>" + arr[i].email + "</td>";
+              str += "<td>" + arr[i].phone + "</td>";
+              str += "<td>" + arr[i].user_name + "</td>";
+              str += "<td>" + gender + "</td>";
+              str += "<td>" + "<a href='javascript:deleteUser(" + arr[i].uid + ")'>删除</a>";
+              str += "<a href='03_update.html?uid=" + arr[i].uid + "'>更新</a>" + "</td>";
+              str += "</tr>";
+            }
+            content.innerHTML = str;
+          }
+        }
+      }
+      xhr.open("get", "/pro/list", true);
+      xhr.send(null);
+    }
+    //根据uid删除用户
+    function deleteUser(uid) {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          var result = xhr.responseText;
+          if (result == "1") {
+            alert("删除成功");
+          } else {
+            alert("删除失败")
+          }
+          loadUsers();
+        }
+      }
+      xhr.open("post", "/pro/deleteUser", true)
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      var input_uid = uid;
+      var formdata = "uid=" + input_uid;
+      xhr.send(formdata);
+    }
+    // 更新用户信息
+    // 点击更新,得到uid 
+    // 根据uid查询该用户所有信息,并响应给前端页面
+    // 每一个字段都在input里边显示
+    // 可以修改每一个input中的内容
+    // 点击更新按钮,发送请求修改数据库
+  
+  </script>
+</body>
+
+</html>

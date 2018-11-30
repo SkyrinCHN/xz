@@ -1,0 +1,77 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+#d1 {
+  width: 100%;
+  height: 560px;
+  background-image: url("../H5/img/login_bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+div.black table a {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 12px;
+  margin-left: 72px;
+}
+
+div.black {
+  width: 280px;
+  height: 300px;
+  background-color: rgba(0, 0, 0, .3);
+  margin-top: 103px;
+  margin-left: 70%;
+}
+
+div.black label {
+  color: #ffffff;
+  font-size: 12px;
+}
+
+div.black table {
+  width: 100%;
+}
+
+div.black h4 {
+  color: #ffffff;
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+div.black span {
+  color: red;
+  font-size: 12px;
+  width: 100%;
+  height: 35px;
+  margin-left: 6px;
+}
+
+.uname,
+.upwd {
+  width: 95%;
+  height: 37px;
+  border: 0;
+  outline: 0;
+  margin-top: 10px;
+  margin-left: 5px;
+  background: #fff url("../H5/img/yhm.png") no-repeat 97% center;
+}
+
+.upwd {
+  background: #fff url("../H5/img/mm.png") no-repeat 97% center;
+}
+
+.auto {
+  margin-left: 5px;
+}
+
+.login {
+  width: 100%;
+  height: 50px;
+  margin-top: 10px;
+  color: #fff;
+  background: linear-gradient(to right, yellow 0%, #ff99ff 100%);
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body onload="getUserInfo()">
+  <form action="">
+    <p>登录名称: <input type="text" id="uname" readonly></p>
+    <p>登录邮箱: <input type="email" id="email"></p>
+    <p>联系方式: <input type="text" id="phone"></p>
+    <p>真实姓名: <input type="text" id="user_name"></p>
+    <p>用户性别: 
+    <input type="radio" name="gender" id="man" value="1"><label for="man">男</label>
+    <input type="radio" name="gender" id="woman" value="0"><label for="woman">女</label>
+    <input type="radio" name="gender" id="unknow" value="u"><label for="unknow">保密</label>
+    <input type="hidden" id="h_uid">
+    </p>
+    <p>
+<input type="button" value="修改" onclick="updateUser()" style="width:230px;height: 50px;background: #fefefe">
+    </p>
+  </form>
+  <script>
+    //加载用户详细信息
+    function getUserInfo(){
+      //1.获取地址栏上,02_list传过来的参数
+        //URLSearchParams访问地址栏查询参数的对象
+      var URLParams = new URLSearchParams(location.search);
+      var  uid = URLParams.get("uid");
+      h_uid.value = uid;
+      //2.小黄人四部曲
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange=function(){
+        if(xhr.readyState == 4 && xhr.status == 200){
+          var result = xhr.responseText;
+          //第二部--> 把响应的数据放入input-text里显示
+          var   arr = JSON.parse(result);
+          uname.value = arr[0].uname;
+          email.value = arr[0].email;
+          phone.value = arr[0].phone;
+          user_name.value = arr[0].user_name;
+          if(arr[0].gender==1){
+            man.checked = "checked";
+          }else if( arr[0].gender == 0){
+            woman.checked = "checked";
+          }else{
+            unknow.checked = "checked";
+          }
+        } 
+      }
+      xhr.open("get","/pro/userquery?uid="+uid,true);
+      xhr.send(null);
+    }  
+    //修改用户信息
+    function updateUser() {  
+      // var URLParams = new URLSearchParams(location.search);
+      // var uid = URLParams.get("uid");
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange=function(){
+        if(xhr.readyState == 4 && xhr.status == 200){
+          var  result = xhr.responseText;
+          alert(result);
+          window.location.href="http://127.0.0.1:3000/02_list.html"
+        }
+      }
+      xhr.open("post","/pro/updateUser",true);
+      xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+      var update_email = email.value,
+          update_phone = phone.value,
+          update_user_name = user_name.value,
+          update_gender,
+          update_uname = uname.value;
+      if(man.checked){
+        update_gender = 1
+      }else if(woman.checked){
+        update_gender = 0
+      }else{
+        update_gender =2;
+      }
+      var formdata ="email="+update_email+"&phone="+update_phone+"&user_name="+update_user_name+"&gender="+update_gender+"&uname="+update_uname+"&uid="+h_uid.value;
+      xhr.send(formdata);
+    }
+  </script>
+</body>
+</html>

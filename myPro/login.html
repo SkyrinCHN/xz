@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>User_login</title>
+  <link rel="stylesheet" href="./user_login.css" type="text/css" >
+</head>
+
+<body>
+  <div id="d1">
+    <table></table>
+    <div class="black">
+      <table>
+        <tr>
+          <td>
+            <h4>登录学子商城</h4>
+          </td>
+          <td> <a href="04_reg.html">新用户注册</a> </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <hr>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <input type="text" id="uname" placeholder="请输入您的用户名" class="uname" onblur="checkUname()">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2"><span id="suname"></span></td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <input type="password" id="upwd" placeholder="请输入您的密码" class="upwd">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="checkbox" id="auto" class="auto"><label for="auto" >自动登录</label>
+          </td>
+          <td>
+            <a href="#">忘记密码?</a>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2"><input type="button" value="登录" onclick="user_login()" class="login"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <script>
+    function checkUname() {
+      var checkUname = uname.value;
+      if(!checkUname){
+        suname.innerHTML="用户名不能为空!"
+      }
+     }
+    function user_login() {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          var result = xhr.responseText;
+          if(result==1){
+            alert("登录成功")
+            window.location.href="http://localhost:3000/02_list.html";
+          }else if(result == 0 ){
+            alert("账号或密码错误");
+          }
+        }
+      }
+      xhr.open("post", "/pro/login", true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      var input_uname = uname.value;
+      var input_upwd = upwd.value;
+      var formdata = "uname=" + input_uname + "&upwd=" + input_upwd;
+      xhr.send(formdata);
+    }
+  </script>
+</body>
+
+</html>

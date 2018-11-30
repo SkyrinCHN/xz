@@ -1,0 +1,32 @@
+.bread{
+  font-size: .6rem;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "->";
+}
+#smallpic>li>a>img{
+  width: 5rem;
+}
+#smallpic{
+  margin-top: 1rem;
+  margin-left: 1.7rem;
+  width:30rem;
+}
+.list{
+  background: linear-gradient(to bottom,#f0f0f0 0%,#e0e0e0 100%);
+}
+#buy{
+  margin-left: .2rem;
+}
+#buy>a{
+  width: 8rem;
+}
+#count{
+  margin-left: 1rem;
+}
+
+#buy a.sc{
+  /* margin-left: 1rem; */
+  width: 2.5rem;
+  margin: 0 auto;
+}
